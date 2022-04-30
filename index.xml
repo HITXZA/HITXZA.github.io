@@ -16,5 +16,14 @@
       <description></description>
     </item>
     
+    <item>
+      <title>My First Post</title>
+      <link>https://hitxza.github.io/posts/my-first-post/</link>
+      <pubDate>Sat, 30 Apr 2022 16:19:09 +0800</pubDate>
+      
+      <guid>https://hitxza.github.io/posts/my-first-post/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
