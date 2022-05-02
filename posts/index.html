@@ -94,6 +94,36 @@
   <div class="bg-white mb3 pa4 gray overflow-hidden">
     <span class="f6 db">Posts</span>
     <h1 class="f3 near-black">
+      <a href="/posts/golang_map/" class="link black dim">
+        Golang_map
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      golang这里的桶，就类似于我们平时看到的数组，不过他是根据桶的低m位与运算来确定桶编号的。
+假设有2^m个桶 那么这个hashvalue应该放到哪个桶里呢？应该放到这个桶里，hashvalue&amp;(2^m-1)也可以写为hashvalue%(2^m)，相当于是对哈希取模。
+所以一个桶里的这8个哈希值是不一样的，只不过同一个桶里，低m位的哈希值肯定一样，因为是靠这个把他们分到一个桶里。
+ 桶是map中最小的挂载粒度：map中不是每一个key都申请一个结构通过链表串联，而是每8个kv键值对存放在一个桶中，然后桶再通以链表的形式串联起来，这样做的原因就是减少对象的数量，减轻gc的负担。  哈希表扩容的时候，如果有很多kv，一次性把这一堆kv复制到新桶里是非常耗时的。
+所以我们应该在每次读写哈希表的时候做一部分迁移工作，直到迁移工作全部完成。这被称为渐进式哈希。
+golang里的map： 如果哈希表要分配的桶的数目大于2^4，那么认为使用到溢出桶的概率会很大，就会预分配2^(B-4)个溢出桶备用。
+hmap在extra字段里记录了溢出桶相关的数据。
+map扩容规则： 等量扩容的意义： 桶的负载因子没超过6.5，但是使用了很多溢出桶，这是什么情况呢？是有很多键值对被删除的情况，这个时候溢出桶太多，我们应该让键值对尽量的聚集到正常的桶里而非溢出桶，这样排列更紧凑，减少了溢出桶的使用。
+分流规则： 以0号旧桶中的kv为例：
+能在0号旧桶里，说明这些kv的最后两位都是0，那么分流到新桶，主要取决于第三位
+这是因为一开始4个旧桶，bukectmask=2
+后来8个新桶 bukectmask = 3
+那么如果第三位是0 , 000&amp;bukectmask = 000&amp;111= 011 分流到0号新桶
+那么如果第三位是1 ， 100&amp;bukectmask = 100&amp;111 = 111 分流到4号新桶
+    </div>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white">
+          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
       <a href="/posts/second-blog/" class="link black dim">
         Second Blog
       </a>
